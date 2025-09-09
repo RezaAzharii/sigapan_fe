@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 
 export const useFilter = (summarizedData, detailedTableData, showTableView) => {
-	const [activeCategory, setActiveCategory] = useState("Semua");
+	const [activeCategory, setActiveCategory] = useState("");
 	const [priceFilter, setPriceFilter] = useState("");
 	const [marketFilter, setMarketFilter] = useState("");
 
@@ -9,8 +9,7 @@ export const useFilter = (summarizedData, detailedTableData, showTableView) => {
 		const dataToFilter = showTableView ? detailedTableData : summarizedData;
 
 		return dataToFilter.filter((item) => {
-			const matchCategory =
-				activeCategory === "Semua" || item.name === activeCategory;
+			const matchCategory = !activeCategory || item.name === activeCategory;
 
 			const matchPrice =
 				!priceFilter ||

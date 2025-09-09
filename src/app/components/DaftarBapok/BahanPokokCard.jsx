@@ -1,6 +1,10 @@
-import { ArrowDown, ArrowUp, Minus } from "lucide-react";
+import {
+	Minus,
+	TrendingDown,
+	TrendingUp,
+} from "lucide-react";
 
-const BahanPokokCard = ({ item }) => {
+const BahanPokokCard = ({ item, onClick }) => {
 	const changeIndicatorStyle =
 		item.change_status === "up"
 			? "bg-red-50 text-red-600 border-red-200"
@@ -10,15 +14,15 @@ const BahanPokokCard = ({ item }) => {
 
 	const changeIcon =
 		item.change_status === "up" ? (
-			<ArrowUp className="w-3 h-3 text-red-500" />
+			<TrendingUp className="w-3 h-3 text-red-500" />
 		) : item.change_status === "down" ? (
-			<ArrowDown className="w-3 h-3 text-green-500" />
+			<TrendingDown className="w-3 h-3 text-green-500" />
 		) : (
 			<Minus className="w-3 h-3 text-blue-500" />
 		);
 
 	return (
-		<div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col group hover:border-emerald-200 transform hover:-translate-y-0.5">
+		<div onClick={onClick} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col group hover:border-emerald-200 transform hover:-translate-y-0.5">
 			<div className="bg-white px-3 py-4 flex justify-center items-center h-36 sm:h-40 overflow-hidden">
 				<img
 					src={`http://127.0.0.1:8000${item.image_url}`}
@@ -44,9 +48,10 @@ const BahanPokokCard = ({ item }) => {
 					<span
 						className={`px-2.5 py-1 rounded-full flex items-center gap-1 border ${changeIndicatorStyle}`}>
 						{changeIcon}
-						{item.change_percent}
+						{item.change_percent === 'same' ? '' : `${item.change_percent} %`}
 					</span>
 				</div>
+				<p className="text-[14px] py-2 font-semibold">{item.tanggal_terakhir}</p>
 			</div>
 		</div>
 	);

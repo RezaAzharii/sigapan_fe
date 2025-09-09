@@ -1,48 +1,21 @@
-import { useState, useEffect } from "react";
 import logo from "../../assets/logo/nav-log.png";
-import { Menu, X } from "lucide-react"; // Import ikon dari Lucide React
+import { Menu, X } from "lucide-react";
+import { useScroll } from "../hooks/useScroll";
 
 const Header = () => {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isScrolled, setIsScrolled] = useState(false);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			const scrollTop = window.scrollY;
-			if (scrollTop > 10) {
-				setIsScrolled(true);
-			} else {
-				setIsScrolled(false);
-			}
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
-	const toggleMenu = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
-
-	const handleSmoothScroll = (e, targetId) => {
-		e.preventDefault();
-		setIsMenuOpen(false);
-		const targetElement = document.querySelector(targetId);
-		if (targetElement) {
-			window.scrollTo({
-				top: targetElement.offsetTop - 50,
-				behavior: "smooth",
-			});
-		}
-	};
+	const {
+		isScrolled,
+		toggleMenu,
+		handleSmoothScroll,
+		setIsMenuOpen,
+		isMenuOpen,
+	} = useScroll();
 
 	return (
 		<>
 			<nav
-				className={`border-gray-200 transition-all duration-300 fixed top-0 left-0 w-full z-50 ${
-					isScrolled
-						? "bg-[#3E5F44] shadow-lg py-0"
-						: "bg-[#93DA97] bg-opacity-95 "
+				className={`border-gray transition-all bg-[#3E5F44] duration-300 fixed top-0 left-0 w-full z-50 ${
+					isScrolled ? "shadow-lg" : "bg-opacity-95 "
 				}`}>
 				<div className="w-full flex items-center justify-between px-3 sm:px-6 py-2 sm:py-4">
 					<a
@@ -62,17 +35,12 @@ const Header = () => {
 						/>
 						<div className="flex flex-col min-w-0 flex-1">
 							<span
-								className={`text-xs sm:text-sm md:text-lg font-medium transition-colors duration-300 leading-tight ${
-									isScrolled ? "text-[#E8FFD7]" : "text-gray-800"
-								}`}>
+								className={`text-xs text-[#E8FFD7] sm:text-sm md:text-lg font-medium transition-colors duration-300 leading-tight`}>
 								<span className="sm:block">Pemerintah Kabupaten Bantul</span>
 							</span>
 							<span
-								className={`transition-all duration-300 leading-tight ${
-									isScrolled
-										? "text-xs sm:text-base font-semibold text-white"
-										: "text-xs sm:text-base md:text-lg font-semibold text-gray-800"
-								}`}>
+								className={`transition-all duration-300 leading-tight text-xs sm:text-base font-semibold text-white 
+								`}>
 								<span className="lg:whitespace-nowrap">
 									DINAS KOPERASI, UKM, PERINDUSTRIAN DAN PERDAGANGAN
 								</span>
@@ -80,13 +48,10 @@ const Header = () => {
 						</div>
 					</a>
 
-					{/* Tombol Hamburger dengan ikon dinamis */}
 					<button
 						onClick={toggleMenu}
 						type="button"
-						className={`hidden max-md:flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg hover:bg-[#E8FFD7] hover:bg-opacity-20 flex-shrink-0 transition-colors duration-300 ${
-							isScrolled ? "text-[#E8FFD7]" : "text-gray-700"
-						}`}
+						className={`hidden max-md:flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg flex-shrink-0 transition-colors duration-300 text-[#E8FFD7] hover:text-[#e8ffd79b] hover:bg-[#93da9739] hover:bg-opacity-20`}
 						aria-controls="navbar-solid-bg"
 						aria-expanded={isMenuOpen}>
 						<span className="sr-only">Open main menu</span>
@@ -101,29 +66,21 @@ const Header = () => {
 						<ul className="flex flex-row font-medium space-x-8 rtl:space-x-reverse">
 							<li>
 								<a
-									href="#"
-									className={`nvb block p-0 bg-transparent transition-all duration-500 ease-in-out transform hover:scale-105 font-bold decoration-2 ${
-										isScrolled
-											? "text-[#E8FFD7] decoration-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]"
-											: "text-[#3E5F44] decoration-[#3E5F44] hover:bg-transparent hover:text-[#5E936C]"
-									}`}
+									href="#beranda"
+									className={`nvb block p-0 bg-transparent transition-all duration-500 ease-in-out transform hover:scale-105 font-medium decoration-2  text-[#E8FFD7] decoration-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]`}
 									aria-current="page"
 									onClick={(e) => {
 										e.preventDefault();
 										window.scrollTo({ top: 0, behavior: "smooth" });
 										setIsMenuOpen(false);
 									}}>
-									Home
+									Beranda
 								</a>
 							</li>
 							<li>
 								<a
 									href="#harga-pangan"
-									className={`nvb block p-0 whitespace-nowrap border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium ${
-										isScrolled
-											? "text-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]"
-											: "text-gray-800 hover:bg-transparent hover:text-[#3E5F44]"
-									}`}
+									className={`nvb block p-0 whitespace-nowrap border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium text-[#E8FFD7] decoration-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97] `}
 									onClick={(e) => handleSmoothScroll(e, "#harga-pangan")}>
 									Bahan Pokok
 								</a>
@@ -131,11 +88,7 @@ const Header = () => {
 							<li>
 								<a
 									href="#daftar-pasar"
-									className={`nvb block p-0 border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium ${
-										isScrolled
-											? "text-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]"
-											: "text-gray-800 hover:bg-transparent hover:text-[#3E5F44]"
-									}`}
+									className={`nvb block p-0 border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium text-[#E8FFD7] decoration-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]`}
 									onClick={(e) => handleSmoothScroll(e, "#daftar-pasar")}>
 									Pasar
 								</a>
@@ -143,11 +96,7 @@ const Header = () => {
 							<li>
 								<a
 									href="#kontak"
-									className={`nvb block p-0 whitespace-nowrap border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium ${
-										isScrolled
-											? "text-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]"
-											: "text-gray-800 hover:bg-transparent hover:text-[#3E5F44]"
-									}`}
+									className={`nvb block p-0 whitespace-nowrap border-0 transition-all duration-500 ease-in-out transform hover:scale-105 font-medium text-[#E8FFD7] decoration-[#E8FFD7] hover:bg-transparent hover:text-[#93DA97]`}
 									onClick={(e) => handleSmoothScroll(e, "#kontak")}>
 									Kontak Kami
 								</a>
@@ -158,20 +107,12 @@ const Header = () => {
 				<div
 					className={`${
 						isMenuOpen ? "block" : "hidden"
-					} md:hidden w-full border-t ${
-						isScrolled
-							? "border-[#5E936C] bg-[#3E5F44]"
-							: "border-[#5E936C] bg-[#93DA97]"
-					} bg-opacity-98`}>
+					} md:hidden w-full border-t border-[#5E936C] bg-[#3E5F44] bg-opacity-98`}>
 					<ul className="flex flex-col font-medium px-3 py-2 space-y-1">
 						<li>
 							<a
 								href="#"
-								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-bold ${
-									isScrolled
-										? "text-[#E8FFD7] bg-[#5E936C] hover:bg-[#93DA97] hover:text-gray-800"
-										: "text-white bg-[#5E936C] hover:bg-[#3E5F44] hover:text-white"
-								}`}
+								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white`}
 								aria-current="page"
 								onClick={(e) => {
 									e.preventDefault();
@@ -184,11 +125,7 @@ const Header = () => {
 						<li>
 							<a
 								href="#harga-pangan"
-								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium ${
-									isScrolled
-										? "text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white"
-										: "text-gray-800 hover:bg-[#5E936C] hover:text-white"
-								}`}
+								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white`}
 								onClick={(e) => handleSmoothScroll(e, "#harga-pangan")}>
 								Harga Pangan
 							</a>
@@ -196,11 +133,7 @@ const Header = () => {
 						<li>
 							<a
 								href="#daftar-pasar"
-								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium ${
-									isScrolled
-										? "text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white"
-										: "text-gray-800 hover:bg-[#5E936C] hover:text-white"
-								}`}
+								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white`}
 								onClick={(e) => handleSmoothScroll(e, "#daftar-pasar")}>
 								Pasar
 							</a>
@@ -208,11 +141,7 @@ const Header = () => {
 						<li>
 							<a
 								href="#kontak"
-								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium ${
-									isScrolled
-										? "text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white"
-										: "text-gray-800 hover:bg-[#5E936C] hover:text-white"
-								}`}
+								className={`block py-3 px-4 rounded-lg transition-all duration-300 font-medium text-[#E8FFD7] hover:bg-[#5E936C] hover:text-white`}
 								onClick={(e) => handleSmoothScroll(e, "#kontak")}>
 								Kontak Kami
 							</a>
@@ -220,7 +149,7 @@ const Header = () => {
 					</ul>
 				</div>
 			</nav>
-			<div className="h-[59px] sm:h-2 md:h-24"></div>
+			<div className="h-[59px] sm:h-2 md:h-0"></div>
 		</>
 	);
 };

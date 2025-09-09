@@ -10,13 +10,22 @@ import {
 import { FaEnvelope, FaXTwitter } from "react-icons/fa6";
 import { Eye } from "lucide-react";
 import { LuCodeXml } from "react-icons/lu";
+import { useScroll } from "../hooks/useScroll";
 
 const Footer = () => {
+	const { setIsMenuOpen } = useScroll();
 	const [visitorCount, setVisitorCount] = useState(0);
 
 	useEffect(() => {
-		const randomCount = Math.floor(Math.random() * 50000) + 10000;
-		setVisitorCount(randomCount);
+		const currentCount = localStorage.getItem("visitorCount");
+		if (currentCount) {
+			const newCount = parseInt(currentCount) + 1;
+			setVisitorCount(newCount);
+			localStorage.setItem("visitorCount", newCount);
+		} else {
+			setVisitorCount(1);
+			localStorage.setItem("visitorCount", 1);
+		}
 	}, []);
 
 	return (
@@ -26,6 +35,12 @@ const Footer = () => {
 					<div>
 						<div className="flex items-start gap-4 mb-5">
 							<img
+								href={"#"}
+								onClick={(e) => {
+									e.preventDefault();
+									window.scrollTo({ top: 0, behavior: "smooth" });
+									setIsMenuOpen(false);
+								}}
 								src={logo}
 								alt="Logo Bantul"
 								className="w-30 h-20 object-contain"
@@ -49,10 +64,8 @@ const Footer = () => {
 						<div className="flex items-center gap-3 bg-green-700 px-4 py-3 rounded-lg">
 							<Eye className="w-5 h-5 text-green-300" />
 							<p className="text-white">
-								Pengunjung:{" "}
-								<span className="font-semibold">
-									{visitorCount.toLocaleString()}
-								</span>
+								Pengunjung :{" "}
+								<span className="font-semibold">{visitorCount}</span>
 							</p>
 						</div>
 					</div>
@@ -75,6 +88,7 @@ const Footer = () => {
 								<FaEnvelope className="w-4 h-4 text-green-300" />
 								<a
 									href="mailto:diskukmpp@bantulkab.go.id"
+									target="_blank"
 									className="hover:underline">
 									diskukmpp@bantulkab.go.id
 								</a>
@@ -96,22 +110,42 @@ const Footer = () => {
 						<h3 className="font-semibold text-white text-base mb-4">Tautan</h3>
 						<ul className="space-y-2 text-green-100 mb-6">
 							<li>
-								<a href="#" className="hover:underline">
+								<a
+									href="https://bantulkab.go.id/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="hover:underline">
 									Pemda Kabupaten Bantul
 								</a>
 							</li>
 							<li>
-								<a href="#" className="hover:underline">
+								<a
+									href="https://dkukmpp.bantulkab.go.id/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="hover:underline">
 									Portal Koperasi & UKM
 								</a>
 							</li>
 							<li>
-								<a href="#" className="hover:underline">
+								<a
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										window.scrollTo({ top: 0, behavior: "smooth" });
+										setIsMenuOpen(false);
+									}}
+									rel="noopener noreferrer"
+									className="hover:underline">
 									Harga Bahan Pokok
 								</a>
 							</li>
 							<li>
-								<a href="#" className="hover:underline">
+								<a
+									href="https://bantulkab.go.id/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="hover:underline">
 									Layanan Perizinan
 								</a>
 							</li>
@@ -122,13 +156,30 @@ const Footer = () => {
 						</h4>
 						<div className="flex gap-3">
 							{[
-								{ icon: <FaFacebookF />, label: "Facebook", href: "#" },
-								{ icon: <FaXTwitter />, label: "Twitter", href: "#" },
-								{ icon: <FaInstagram />, label: "Instagram", href: "#" },
-								{ icon: <FaYoutube />, label: "YouTube", href: "#" },
+								{
+									icon: <FaFacebookF />,
+									label: "Facebook",
+									href: "https://www.facebook.com/pemkabbantul/",
+								},
+								{
+									icon: <FaXTwitter />,
+									label: "Twitter",
+									href: "https://twitter.com/pemkabbantul",
+								},
+								{
+									icon: <FaInstagram />,
+									label: "Instagram",
+									href: "https://www.instagram.com/pemkabbantul/",
+								},
+								{
+									icon: <FaYoutube />,
+									label: "YouTube",
+									href: "https://www.youtube.com/channel/UC3XfkK2AGWbJC9zINJQZUzw",
+								},
 							].map(({ icon, label, href }) => (
 								<a
 									key={label}
+									target="_blank"
 									href={href}
 									className="w-8 h-8 bg-green-700 hover:bg-green-600 rounded-lg flex items-center justify-center transition-colors"
 									aria-label={label}>

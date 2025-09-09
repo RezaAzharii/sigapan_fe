@@ -1,7 +1,17 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const MapPriview = ({ latitude, longitude, nama }) => {
+const MapPriview = ({
+	latitude,
+	longitude,
+	nama,
+	pedagang,
+	kios,
+	kantor,
+	bango,
+	wc,
+	tps,
+}) => {
 	return (
 		<MapContainer
 			center={[latitude, longitude]}
@@ -16,7 +26,21 @@ const MapPriview = ({ latitude, longitude, nama }) => {
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
 			<Marker position={[latitude, longitude]}>
-				<Popup>{nama}</Popup>
+				<Popup>
+					<div className="w-[200px]">
+						<h4 className="text-sm font-semibold text-gray-800 m-0">{nama}</h4>
+						<div className="">
+							<ul>
+								<li>{pedagang} Pedagang</li>
+								<li>{kios} Kios</li>
+								<li>{kantor} Kantor</li>
+								<li>{bango} Bango</li>
+								<li>{wc} WC</li>
+								<li>{tps} Tempat Sampah</li>
+							</ul>
+						</div>
+					</div>
+				</Popup>
 			</Marker>
 		</MapContainer>
 	);
